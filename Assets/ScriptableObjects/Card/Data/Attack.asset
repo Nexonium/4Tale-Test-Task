@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f742f8c3b148346af099141ea00f91, type: 3}
+  m_Name: Attack
+  m_EditorClassIdentifier: 
+  cardName: Attack
+  cardDescription: Deal 6 damage
+  cardCost: 1
+  cardArt: {fileID: 21300000, guid: af948bb058480ec4bb8cea79af7dce49, type: 3}
+  cardEffects:
+  - {fileID: 11400000, guid: 5f6820ae195ffab44a6b7bc68302bf32, type: 2}
