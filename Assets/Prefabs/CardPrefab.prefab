@@ -626,8 +626,10 @@ MonoBehaviour:
   card: {fileID: 0}
   cardName: {fileID: 4291866660177769160}
   cardDescription: {fileID: 3369302242914253825}
-  cardCost: {fileID: 0}
+  cardCost: {fileID: 1567691694834035547}
   cardArt: {fileID: 297540299477438348}
+  playField: {fileID: 0}
+  scaleFactor: 1.2
 --- !u!1 &8441256581236580904
 GameObject:
   m_ObjectHideFlags: 0
