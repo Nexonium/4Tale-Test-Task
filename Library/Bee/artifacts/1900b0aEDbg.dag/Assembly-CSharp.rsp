@@ -358,6 +358,7 @@
 "Assets/ScriptableObjects/Effects/DefenceEffect.cs"
 "Assets/ScriptableObjects/Effects/HealEffect.cs"
 "Assets/ScriptableObjects/Effects/TargetableEffect.cs"
+"Assets/Scripts/ArrowArcRenderer.cs"
 "Assets/Scripts/BattleManager.cs"
 "Assets/Scripts/BezierArrow.cs"
 "Assets/Scripts/BezierCurve.cs"

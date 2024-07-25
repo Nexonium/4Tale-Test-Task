@@ -9,7 +9,7 @@ using TMPro;
 /// Sets and manages properties of the CardPrefab, card drag, selection, and other properties
 /// </summary>
 
-public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     #region Variables
 
@@ -26,7 +26,9 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public bool isDragging = false;
     public bool isTargeting = false;
 
-    private BezierArrow bezierArrow;
+    //public BezierArrow bezierArrow;
+    //public GameObject arrow;
+    public ArrowArcRenderer arrow;
     private GameObject playField;
 
     private RectTransform rectTransform;
@@ -37,17 +39,27 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public float scaleFactor = 1.2f;
     //public Vector3 hoverOffset = new(0, 20, 0);
 
-    [Header("Drag Properties")]
-    public bool isDraggable = false;
 
+    [Header("Selector Properties")]
+    private Deck deck;
+    private HandFieldController handFieldController;
+
+    private bool isHighlighted = false;
 
     #endregion
 
     #region Methods and Classes
     private void Start()
     {
-        //bezierArrow = GetComponent<BezierArrow>;
+        deck = FindObjectOfType<Deck>();
+        handFieldController = FindObjectOfType<HandFieldController>();
         rectTransform = GetComponent<RectTransform>();
+        arrow = GetComponent<ArrowArcRenderer>();
+    }
+
+    void Update()
+    {
+
     }
 
     public void SetCard(Card card)
@@ -71,27 +83,54 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Saving original properties
-        //originalPosition = rectTransform.position;
-        originalRotation = rectTransform.localRotation;
-        originalSiblingIndex = rectTransform.GetSiblingIndex();
-
-    // Setting new properties
-        //rectTransform.position = hoverOffset;
-        rectTransform.localRotation = Quaternion.Euler(0, 0, 0);
-        rectTransform.localScale = Vector3.one * scaleFactor;
-        rectTransform.SetSiblingIndex(rectTransform.parent.childCount - 1);
-
+        HighlightCard();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // Returning original properties
-        //rectTransform.position = originalPosition;
-        rectTransform.localRotation = originalRotation;
-        rectTransform.localScale = Vector3.one;
-        rectTransform.SetSiblingIndex(originalSiblingIndex);
+        if (!isTargeting)
+        {
+            CancelHighlight();
+        }
+    }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (card.HasTargetableEffect())
+            {
+                if (!isTargeting) { 
+                    StartTargeting(eventData.position); 
+                }
+                else
+                {
+                    GameObject target = eventData.pointerCurrentRaycast.gameObject;
+                    if (target != null)
+                    {
+                        // TODO: Play card
+                        //ApplyEffects(target.GetComponent<Enemy>);
+                    }
+                }
+            }
+            else
+            {
+                // TODO: Play card
+                //ApplyEffects();
+                //Destroy(gameObject);
+            }
+        }
+        else if ((eventData.button == PointerEventData.InputButton.Right) && isTargeting) 
+        {
+            if (isHighlighted)
+            {
+                CancelHighlight();
+            }
+            else
+            {
+                CancelSelection();
+            }
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -99,8 +138,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (card.HasTargetableEffect())
         {
             isTargeting = true;
-            bezierArrow.Activate(transform.position, eventData.position);
-            //HiglightCard();
         }
         else
         {
@@ -111,11 +148,7 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (isTargeting)
-        {
-            bezierArrow.UpdateEndPoint(eventData.position);
-        }
-        else if (isDragging)
+        if (isDragging)
         {
             transform.position = eventData.position;
         }
@@ -124,19 +157,19 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public void OnEndDrag(PointerEventData eventData)
     {
 
-        if (isTargeting)
-        {
-            GameObject target = eventData.pointerCurrentRaycast.gameObject;
-            if (target != null)
-            {
-                //ApplyEffects(target.GetComponent<Enemy>)
-            }
-            else
-            {
-                CancelSelection();
-            }
-        }
-        else if (isDragging)
+        //if (isTargeting)
+        //{
+        //    GameObject target = eventData.pointerCurrentRaycast.gameObject;
+        //    if (target != null)
+        //    {
+        //        //ApplyEffects(target.GetComponent<Enemy>)
+        //    }
+        //    else
+        //    {
+        //        CancelSelection();
+        //    }
+        //}
+        if (isDragging)
         {
 
             playField = FindAnyObjectByType<PlayField>().gameObject;
@@ -146,17 +179,13 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
                 RectTransform playFieldRect = playField.GetComponent<RectTransform>();
                 if (RectTransformUtility.RectangleContainsScreenPoint(playFieldRect, Input.mousePosition))
                 {
+                    deck.DiscardCard(card);
+                    
+                    // Update hand
+                    handFieldController.UpdateHandDisplay(deck.handPile.ToArray());
+
                     // TODO: Play card effect
                     Destroy(gameObject);
-
-                    // Update hand
-                    GameObject deckObject = FindAnyObjectByType<Deck>().gameObject;
-                    Deck deck = deckObject.GetComponent<Deck>();
-                    deck.DiscardCard(card);
-
-                    GameObject handField = FindAnyObjectByType<HandFieldController>().gameObject;
-                    HandFieldController handFieldController = handField.GetComponent<HandFieldController>();
-                    handFieldController.UpdateHandDisplay(deck.handPile.ToArray());
                 }
             }
 
@@ -164,18 +193,51 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         }
     }
 
+    private void HighlightCard()
+    {
+        isHighlighted = true;
+
+        // Saving original properties
+        //originalPosition = rectTransform.position;
+        originalRotation = rectTransform.localRotation;
+        originalSiblingIndex = rectTransform.GetSiblingIndex();
+
+        // Setting new properties
+        //rectTransform.position = hoverOffset;
+        rectTransform.localRotation = Quaternion.Euler(0, 0, 0);
+        rectTransform.localScale = Vector3.one * scaleFactor;
+        rectTransform.SetSiblingIndex(rectTransform.parent.childCount - 1);
+    }
+
+    private void CancelHighlight()
+    {
+        isHighlighted = false;
+
+        // Returning original properties
+        //rectTransform.position = originalPosition;
+        rectTransform.localRotation = originalRotation;
+        rectTransform.localScale = Vector3.one;
+        rectTransform.SetSiblingIndex(originalSiblingIndex);
+    }
+
+    private void StartTargeting(Vector3 position)
+    {
+        isTargeting = true;
+        arrow.enabled = true;
+    }
+
     private void CancelSelection()
     {
         isTargeting = false;
-        bezierArrow.Deactivate();
-        ResetCard();
+        arrow.enabled = false;
+        //CancelHighlight();
+        //ResetCard();
     }
 
     private void ResetCard()
     {
         isDragging = false;
         isTargeting = false;
-        bezierArrow.Deactivate();
         transform.position = originalPosition;
         transform.rotation = originalRotation;
         transform.localScale = Vector3.one;
