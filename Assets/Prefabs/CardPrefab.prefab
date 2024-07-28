@@ -709,7 +709,6 @@ MonoBehaviour:
   isTargeting: 0
   arrow: {fileID: 9104090813910394705}
   scaleFactor: 1.2
-  isDraggable: 0
 --- !u!114 &7507145997133750403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,7 +727,6 @@ MonoBehaviour:
   spacing: 20
   arrowAngleAdjust: 180
   dotsToSkip: 2
-  isActive: 0
 --- !u!1 &8426634805269598802
 GameObject:
   m_ObjectHideFlags: 0

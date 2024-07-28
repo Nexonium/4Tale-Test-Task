@@ -1,12 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+/// <summary>
+/// Settings of battle, player turn, enemy turn, and end turn button
+/// </summary>
 public class BattleManager : MonoBehaviour
 {
 
     public PlayerEntity player;
     public EnemyEntity enemy;
+    public Button endTurnButton;
+    public Deck deck;
+    public HandFieldController handFieldController;
 
     private enum TurnState { PlayerTurn, EnemyTurn }
     private TurnState currentState;
@@ -14,67 +21,66 @@ public class BattleManager : MonoBehaviour
 
     void Start()
     {
+        endTurnButton.onClick.AddListener(OnEndTurnButtonClicked);
+        StartBattle();
+    }
 
+    void StartBattle()
+    {
         // Fight init
-
-        //player.maxHealth = 50;
-        //player.health = 50;
-
-        player.maxEnergy = 3;
-        player.energy = player.maxEnergy;
-
-
-        //enemy.maxHealth = 80;
-        //enemy.health = 80;
-
         enemy.PlanNextAction();
-
-        currentState = TurnState.PlayerTurn;
-    }
-
-
-    void Update()
-    {
-        
-        switch (currentState)
-        {
-            case TurnState.PlayerTurn:
-                // TODO play cards
-                // Targeting and stuff
-                break;
-
-            case TurnState.EnemyTurn:
-                ExecuteEnemyTurn();
-                break;
-        }
-    }
-
-    public void EndPlayerTurn()
-    {
-        // Play some end turn animations and stuff
-        currentState = TurnState.EnemyTurn;
-    }
-
-    private void ExecuteEnemyTurn()
-    {
-        // Default attack target is Player
-        // Defaul defence and heal target is enemy
-
-        Entity defaultTarget = enemy.plannedAction is EnemyAttack ? (Entity)player : (Entity)enemy;
-
-        enemy.ExecutePlannedAction(defaultTarget);
-        enemy.PlanNextAction();
-
-        // After finishing animations and stuff, end enemy turn
         StartPlayerTurn();
     }
 
-    private void StartPlayerTurn()
+    void StartPlayerTurn()
     {
-
-        // Restoring player energy
-        player.energy = player.maxEnergy;
-
         currentState = TurnState.PlayerTurn;
+        player.energy = player.maxEnergy;
+        endTurnButton.interactable = true;
+        Debug.Log("Player's turn starts!");
     }
+
+    void EndPlayerTurn()
+    {
+        currentState = TurnState.EnemyTurn;
+        endTurnButton.interactable = false;
+        deck.DiscardHand();
+        handFieldController.UpdateHandDisplay(deck.handPile.ToArray());
+
+        Debug.Log("Player's turn ends!");
+        StartCoroutine(EnemyTurn());
+    }
+
+    IEnumerator EnemyTurn()
+    {
+        Debug.Log("Enemy's turn starts!");
+
+        yield return new WaitForSeconds(1f);
+
+        if (enemy.plannedAction != null)
+        {
+            // Default attack target is Player
+            // Defaul defence and heal target is enemy
+            Entity defaultTarget = enemy.plannedAction is EnemyAttack ? (Entity)player : (Entity)enemy;
+            enemy.ExecutePlannedAction(defaultTarget);
+
+            Debug.Log("Enemy makes action: " + enemy.plannedAction.actionName);
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        // After finishing animations and stuff, end enemy turn
+        Debug.Log("Enemy's turn ends!");
+        StartPlayerTurn();
+        enemy.PlanNextAction();
+    }
+
+    void OnEndTurnButtonClicked()
+    {
+        if (currentState == TurnState.PlayerTurn)
+        {
+            EndPlayerTurn();
+        }
+    }
+
 }

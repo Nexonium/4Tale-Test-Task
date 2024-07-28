@@ -5,9 +5,9 @@ public abstract class CardEffect : ScriptableObject
 {
 
     public int effectValue;
-    public GameObject defaultTarget;
+    public Entity defaultTarget;
 
-    public abstract void ApplyEffect(GameObject target);
+    public abstract void ApplyEffect(Entity target = null);
 }
 
 public enum EffectTarget

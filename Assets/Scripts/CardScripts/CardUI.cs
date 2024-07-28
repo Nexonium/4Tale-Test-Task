@@ -1,85 +1,96 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
 /// <summary>
-/// Sets and manages properties of the CardPrefab, card drag, selection, and other properties
+/// Sets and manages properties of the CardPrefab, drag, selection, and other properties
 /// </summary>
 
-public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler
 {
     #region Variables
 
     [Header("Prefab Elements")]
     public Card card;
-
     public TMP_Text cardName;
     public TMP_Text cardDescription;
     public TMP_Text cardCost;
     public Image cardArt;
 
-
     [Header("Selector Properties")]
-    public bool isDragging = false;
-    public bool isTargeting = false;
+    public float scaleFactor = 1.2f;
 
-    //public BezierArrow bezierArrow;
-    //public GameObject arrow;
-    public ArrowArcRenderer arrow;
-    private GameObject playField;
+    private bool isDragging;
+    private bool isTargeting;
+    private bool isHighlighted;
 
+    public bool isTargetable;
+
+    private ArrowArcRenderer arrow;
     private RectTransform rectTransform;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
     private int originalSiblingIndex;
 
-    public float scaleFactor = 1.2f;
-    //public Vector3 hoverOffset = new(0, 20, 0);
-
-
-    [Header("Selector Properties")]
-    private Deck deck;
-    private HandFieldController handFieldController;
-
-    private bool isHighlighted = false;
+    private GameManager gameManager;
 
     #endregion
 
-    #region Methods and Classes
+    #region Unity Methods
+
+    private void Awake()
+    {
+        InitializeComponents();
+    }
+
     private void Start()
     {
-        deck = FindObjectOfType<Deck>();
-        handFieldController = FindObjectOfType<HandFieldController>();
+        SetCard(card);
+    }
+
+    private void InitializeComponents()
+    {
         rectTransform = GetComponent<RectTransform>();
         arrow = GetComponent<ArrowArcRenderer>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
-    void Update()
-    {
+    #endregion
 
-    }
+    #region Card Methods
 
     public void SetCard(Card card)
     {
-        this.card = card;
+        if (card != null)
+        {
+            this.card = card;
+            UpdateCardUI();
+        }
+    }
+
+    private void UpdateCardUI()
+    {
         cardName.text = card.cardName;
         cardDescription.text = card.cardDescription;
         cardCost.text = card.cardCost.ToString();
         cardArt.sprite = card.cardArt;
     }
 
-    public void ApplyEffects(GameObject target)
+    public bool HasEnoughEnergy()
     {
-        foreach (var effect in card.cardEffects)
-        {
-            effect.ApplyEffect(target);
-        }
+        return gameManager.player.HasEnoughEnergy(card);
     }
 
-    #region Selector and Drag methods
+    public void PlayCard(Entity target)
+    {
+        gameManager.PlayCard(card, target);
+        Destroy(gameObject);
+    }
+
+    #endregion
+
+    #region Event Handlers
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -96,53 +107,22 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        switch (eventData.button)
         {
-            if (card.HasTargetableEffect())
-            {
-                if (!isTargeting) { 
-                    StartTargeting(eventData.position); 
-                }
-                else
-                {
-                    GameObject target = eventData.pointerCurrentRaycast.gameObject;
-                    if (target != null)
-                    {
-                        // TODO: Play card
-                        //ApplyEffects(target.GetComponent<Enemy>);
-                    }
-                }
-            }
-            else
-            {
-                // TODO: Play card
-                //ApplyEffects();
-                //Destroy(gameObject);
-            }
-        }
-        else if ((eventData.button == PointerEventData.InputButton.Right) && isTargeting) 
-        {
-            if (isHighlighted)
-            {
-                CancelHighlight();
-            }
-            else
-            {
-                CancelSelection();
-            }
+            case PointerEventData.InputButton.Left:
+                HandleLeftClick();
+                break;
+            case PointerEventData.InputButton.Right:
+                HandleRightClick();
+                break;
         }
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData)
     {
-        if (card.HasTargetableEffect())
+        if (isDragging)
         {
-            isTargeting = true;
-        }
-        else
-        {
-            isDragging = true;
-            originalPosition = transform.position;
+            transform.position = originalPosition;
         }
     }
 
@@ -152,59 +132,75 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,
         {
             transform.position = eventData.position;
         }
+        else if (!isDragging && isTargeting)
+        {
+            StartTargeting();
+        }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    #endregion
+
+    #region Private Methods
+
+    private void StartDragging()
     {
+        isDragging = true;
+        originalPosition = transform.position;
+    }
 
-        //if (isTargeting)
-        //{
-        //    GameObject target = eventData.pointerCurrentRaycast.gameObject;
-        //    if (target != null)
-        //    {
-        //        //ApplyEffects(target.GetComponent<Enemy>)
-        //    }
-        //    else
-        //    {
-        //        CancelSelection();
-        //    }
-        //}
-        if (isDragging)
+    private void StartTargeting()
+    {
+        isTargeting = true;
+        arrow.enabled = true;
+    }
+
+    private void HandleLeftClick()
+    {
+        if (HasEnoughEnergy())
         {
-
-            playField = FindAnyObjectByType<PlayField>().gameObject;
-            if (playField != null)
+            if (card.HasTargetableEffect())
             {
-
-                RectTransform playFieldRect = playField.GetComponent<RectTransform>();
-                if (RectTransformUtility.RectangleContainsScreenPoint(playFieldRect, Input.mousePosition))
+                if (isTargeting)
                 {
-                    deck.DiscardCard(card);
-                    
-                    // Update hand
-                    handFieldController.UpdateHandDisplay(deck.handPile.ToArray());
-
-                    // TODO: Play card effect
-                    Destroy(gameObject);
+                    if (TryGetTarget(out Entity target))
+                    {
+                        PlayCard(target);
+                    }
+                }
+                else
+                {
+                    StartTargeting();
                 }
             }
-
-            transform.position = originalPosition;
+            else
+            {
+                StartDragging();
+            }
         }
+    }
+
+    private void HandleRightClick()
+    {
+        if (isTargeting)
+        {
+            CancelSelection();
+        }
+    }
+
+    private bool TryGetTarget(out Entity target)
+    {
+        target = null;
+        // TODO: Find EnemyEntity
+        return target != null;
     }
 
     private void HighlightCard()
     {
         isHighlighted = true;
-
-        // Saving original properties
-        //originalPosition = rectTransform.position;
         originalRotation = rectTransform.localRotation;
         originalSiblingIndex = rectTransform.GetSiblingIndex();
 
-        // Setting new properties
-        //rectTransform.position = hoverOffset;
-        rectTransform.localRotation = Quaternion.Euler(0, 0, 0);
+        rectTransform.localRotation = Quaternion.identity;
         rectTransform.localScale = Vector3.one * scaleFactor;
         rectTransform.SetSiblingIndex(rectTransform.parent.childCount - 1);
     }
@@ -212,73 +208,23 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,
     private void CancelHighlight()
     {
         isHighlighted = false;
-
-        // Returning original properties
-        //rectTransform.position = originalPosition;
         rectTransform.localRotation = originalRotation;
-        rectTransform.localScale = Vector3.one;
         rectTransform.SetSiblingIndex(originalSiblingIndex);
-    }
-
-    private void StartTargeting(Vector3 position)
-    {
-        isTargeting = true;
-        arrow.enabled = true;
+        rectTransform.localScale = Vector3.one;
     }
 
     private void CancelSelection()
     {
         isTargeting = false;
         arrow.enabled = false;
-        //CancelHighlight();
-        //ResetCard();
+        CancelHighlight();
     }
 
-    private void ResetCard()
-    {
-        isDragging = false;
-        isTargeting = false;
-        transform.position = originalPosition;
-        transform.rotation = originalRotation;
-        transform.localScale = Vector3.one;
-    }
     #endregion
 
-    #region Init object/prefab methods
+    #region Init Methods
 
-    // Refreshing object in inspector/editor
-    private void OnValidate()
-        {
-            Awake();
-        }
 
-        private void Awake()
-        {
-            SetCardUI();
-        }
-
-        public void SetCardUI()
-        {
-            if (card != null)
-            {
-                SetCardTexts();
-                SetCardImages();
-            }
-        }
-
-        private void SetCardTexts()
-        {
-            cardName.text = card.cardName;
-            cardDescription.text = card.cardDescription;
-            cardCost.text = card.cardCost.ToString();
-        }
-
-        private void SetCardImages()
-        {
-            cardArt.sprite = card.cardArt;
-        }
-        
-        #endregion
 
     #endregion
 }

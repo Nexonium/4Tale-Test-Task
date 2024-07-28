@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Setting of possible actions, planning and executing actions of the enemy
+/// </summary>
+
 public class EnemyEntity : Entity
 {
 
@@ -10,7 +14,11 @@ public class EnemyEntity : Entity
 
     private void Start()
     {
+        //Initialize();
+    }
 
+    public void Initialize()
+    {
         possibleActions = new List<EnemyAction>
         {
             new EnemyAttack { actionEffectValue = 10 },

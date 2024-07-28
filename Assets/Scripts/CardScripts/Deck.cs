@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Settings for deck, hand, and discard pile
@@ -10,13 +11,15 @@ public class Deck : MonoBehaviour
 {
     public static Deck Instance { get; private set; }   // Singleton
 
-    public List<Card> deckPile = new();
+    public List<Card> drawPile = new();
     public List<Card> handPile = new();
     public List<Card> discardPile = new();
 
     public int handSize = 5;
 
     public HandFieldController handFieldController;
+
+
 
     // Singleton method
     private void Awake()
@@ -33,13 +36,18 @@ public class Deck : MonoBehaviour
 
     private void Start()
     {
-        ShuffleDeck();
-        DrawCard(handSize);
+        //Initialize();
+    }
+
+    public void Initialize()
+    {
+        ShuffleDeck(drawPile);
+        DrawHand();
         handFieldController.UpdateHandDisplay(handPile.ToArray());
     }
 
-    // Shuffling using Fisher–Yates shuffle
-    private void ShuffleDeck()
+    // Shuffling cards using Fisher–Yates shuffle
+    private void ShuffleDeck(List<Card> deckPile)
     {
         for (int i = deckPile.Count - 1; i > 0; i--)
         {
@@ -50,23 +58,28 @@ public class Deck : MonoBehaviour
         }
     }
 
-    public void DrawCard(int amount)
+    public void DrawCards(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
 
             // If deck is empty, we put discarded cards into the deck and shuffle
-            if (deckPile.Count <= 0)
+            if (drawPile.Count <= 0)
             {
-                discardPile = deckPile;
-                discardPile.Clear();
-                ShuffleDeck();
+                ShuffleDiscardToDraw();
             }
 
             // Drawing top card from the deck to the hand
-            handPile.Add(deckPile[0]);
-            deckPile.RemoveAt(0);
+            handPile.Add(drawPile[0]);
+            drawPile.RemoveAt(0);
         }
+    }
+
+    public void ShuffleDiscardToDraw()
+    {
+        discardPile = drawPile;
+        discardPile.Clear();
+        ShuffleDeck(drawPile);
     }
 
     // This method discards only card from hand
@@ -79,5 +92,16 @@ public class Deck : MonoBehaviour
             discardPile.Add(card);
             //card.gameObject.SetActive(false);
         }
+    }
+
+    public void DrawHand()
+    {
+        DrawCards(handSize);
+    }
+
+    public void DiscardHand()
+    {
+        discardPile.AddRange(handPile);
+        handPile.Clear();
     }
 }

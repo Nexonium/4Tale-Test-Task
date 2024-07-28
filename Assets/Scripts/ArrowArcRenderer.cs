@@ -3,12 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Settings of arrow while targeting
+/// </summary>
+
 public class ArrowArcRenderer : MonoBehaviour
 {
 
+    [Header("Arrow objects")]
     public GameObject arrowHeadPrefab;
     public GameObject arrowBodyPrefab;
 
+    [Header("Arrow settings")]
     public int poolSize = 50;
     private List<GameObject> dotPool = new List<GameObject>();
     private GameObject arrowInstance;

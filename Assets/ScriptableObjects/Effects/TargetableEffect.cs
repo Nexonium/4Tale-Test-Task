@@ -1,12 +1,17 @@
 
 using UnityEngine;
 
+/// <summary>
+/// Settings for targetable effects
+/// </summary>
+
 public class TargetableEffect : CardEffect
 {
 
-    public override void ApplyEffect(GameObject target)
+    public override void ApplyEffect(Entity target = null)
     {
-        // Effect logic
+        if (target == null) { target = defaultTarget; }
+        Debug.Log($"Targeting {target.name}!");
     }
 
     public void SelectTarget(Entity[] potentialTargets)
@@ -15,3 +20,4 @@ public class TargetableEffect : CardEffect
         // For example, bezier curve arrow
     }
 }
+

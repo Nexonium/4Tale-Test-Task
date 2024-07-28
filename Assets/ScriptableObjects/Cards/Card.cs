@@ -18,4 +18,17 @@ public class Card : ScriptableObject
     {
         return targetableEffect != null;
     }
+
+    public void PlayEffects(Entity target = null)
+    {
+        if (HasTargetableEffect())
+        {
+            targetableEffect.ApplyEffect(target);
+        }
+
+        foreach (CardEffect effect in cardEffects)
+        {
+            effect.ApplyEffect();
+        }
+    }
 }
