@@ -41,7 +41,10 @@ public class GameManager : MonoBehaviour
         currentTurn = PlayTurn.PlayerTurn;
 
         player.RestoreEnergy(player.maxEnergy);
+        player.ResetDefence();
+
         deck.DrawCards(player.handSize);
+
         uiManager.UpdateHand(deck.handPile);
         uiManager.UpdateEnergy(player.energy);
 
@@ -64,6 +67,8 @@ public class GameManager : MonoBehaviour
         currentTurn = PlayTurn.EnemyTurn;
         Debug.Log("Enemy's turn starts!");
 
+        enemy.ResetDefence();
+
         if (enemy.plannedAction != null)
         {
             // Default attack target is Player
@@ -78,7 +83,9 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Enemy's turn ends!");
+
         StartPlayerTurn();
+        
         enemy.PlanNextAction();
     }
 

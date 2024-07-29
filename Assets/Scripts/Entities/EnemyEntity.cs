@@ -17,8 +17,14 @@ public class EnemyEntity : Entity
         //Initialize();
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
+        healthBar.Initialize(maxHealth, health);
+
+        // Subscribing healthbar to the events
+        OnHealthChanged += healthBar.SetHealth;
+        OnDefenceChanged += healthBar.SetDefence;
+
         possibleActions = new List<EnemyAction>
         {
             new EnemyAttack { actionEffectValue = 10 },
@@ -93,7 +99,7 @@ public class EnemyDefence : EnemyAction
     public override void ExecuteAction(Entity defaultTarget)
     {
         target = target ?? defaultTarget;
-        target.defence += actionEffectValue;
+        target.GainDefence(actionEffectValue);
 
         Debug.Log($"Enemy defends, gaining {actionEffectValue} block to {target}!");
     }
@@ -109,8 +115,7 @@ public class EnemyHeal : EnemyAction
         target = target ?? defaultTarget;
         if (target.health < target.maxHealth)
         {
-            int healthAfterHealing = Mathf.Min(target.health + actionEffectValue, target.maxHealth);
-            target.health = healthAfterHealing;
+            target.GainHealth(actionEffectValue);
         }
 
         Debug.Log($"Enemy rests, regaining {actionEffectValue} health to {target}!");

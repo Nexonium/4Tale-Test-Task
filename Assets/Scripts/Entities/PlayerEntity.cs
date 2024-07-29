@@ -12,8 +12,14 @@ public class PlayerEntity : Entity
     public int energy;
     public int handSize;
 
-    public void Initialize()
+    public override void Initialize()
     {
+        healthBar.Initialize(maxHealth, health);
+
+        // Subscribing healthbar to the events
+        OnHealthChanged += healthBar.SetHealth;
+        OnDefenceChanged += healthBar.SetDefence;
+
         RestoreEnergy(maxEnergy);
     }
 
@@ -41,6 +47,8 @@ public class PlayerEntity : Entity
     protected override void Die()
     {
         Debug.Log("Player has died!");
+
+        Destroy(gameObject);
     }
 
 

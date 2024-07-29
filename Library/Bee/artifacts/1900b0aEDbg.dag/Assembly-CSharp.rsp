@@ -373,6 +373,7 @@
 "Assets/Scripts/Entities/PlayerEntity.cs"
 "Assets/Scripts/GameManager.cs"
 "Assets/Scripts/HandFieldController.cs"
+"Assets/Scripts/HealthBar.cs"
 "Assets/Scripts/UIManager.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"

@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -8,10 +9,51 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
 
-    public int health;
+    public int _health;
     public int maxHealth;
 
-    public int defence;
+    public int _defence;
+
+    public HealthBar healthBar;
+
+    public event Action<int> OnHealthChanged;
+    public event Action<int> OnDefenceChanged;
+
+    // Declaring event variables to subscribe
+    public int health
+    {
+        get { return _health; }
+        set
+        {
+            if (_health != value)
+            {
+                _health = value;
+                OnHealthChanged?.Invoke(health);
+            }
+        }
+    }
+
+    public int defence
+    {
+        get { return _defence; }
+        set
+        {
+            if (_defence != value)
+            {
+                _defence = value;
+                OnDefenceChanged?.Invoke(defence);
+            }
+        }
+    }
+
+    public virtual void Initialize()
+    {
+        healthBar.Initialize(maxHealth, _health);
+        
+        // Subscribing healthbar to the events
+        OnHealthChanged += healthBar.SetHealth;
+        OnDefenceChanged += healthBar.SetDefence;
+    }
 
     public void TakeDamage(int damage)
     {
@@ -36,6 +78,11 @@ public class Entity : MonoBehaviour
             int healthAfterHeal = Mathf.Min(health + amount, maxHealth);
             health = healthAfterHeal;
         }
+    }
+
+    public void ResetDefence()
+    {
+        defence = 0;
     }
 
     protected virtual void Die()

@@ -15,6 +15,6 @@ MonoBehaviour:
   cardName: Attack
   cardDescription: Deal 6 damage
   cardCost: 1
-  cardArt: {fileID: 21300000, guid: af948bb058480ec4bb8cea79af7dce49, type: 3}
+  cardArt: {fileID: 21300000, guid: 79dd1378b32c5ff439774644cc01ee30, type: 3}
   targetableEffect: {fileID: 11400000, guid: 5f6820ae195ffab44a6b7bc68302bf32, type: 2}
   cardEffects: []

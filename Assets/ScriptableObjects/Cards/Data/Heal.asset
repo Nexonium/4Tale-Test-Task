@@ -15,6 +15,7 @@ MonoBehaviour:
   cardName: Bandage
   cardDescription: Restores 2 health
   cardCost: 2
-  cardArt: {fileID: 0}
+  cardArt: {fileID: 21300000, guid: aeb4182764693d6468dedb62fbfa00bd, type: 3}
+  targetableEffect: {fileID: 0}
   cardEffects:
   - {fileID: 11400000, guid: 808ceb1cbc9aba84d95e4c271e241ddf, type: 2}
