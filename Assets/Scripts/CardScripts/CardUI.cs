@@ -75,6 +75,8 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IP
         cardDescription.text = card.cardDescription;
         cardCost.text = card.cardCost.ToString();
         cardArt.sprite = card.cardArt;
+
+        isTargetable = card.HasTargetableEffect();
     }
 
     public bool HasEnoughEnergy()
@@ -82,7 +84,7 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IP
         return gameManager.player.HasEnoughEnergy(card);
     }
 
-    public void PlayCard(Entity target)
+    public void PlayCard(Entity target = null)
     {
         gameManager.PlayCard(card, target);
         Destroy(gameObject);
@@ -120,9 +122,10 @@ public class CardUI : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IP
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (isDragging)
+        if (!isTargetable)
         {
-            transform.position = originalPosition;
+            // Play card on default target
+            PlayCard();
         }
     }
 

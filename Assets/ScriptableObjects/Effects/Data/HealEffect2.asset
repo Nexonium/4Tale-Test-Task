@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: HealEffect2
   m_EditorClassIdentifier: 
   effectValue: 2
-  defaultTarget: {fileID: 6954972339718850839, guid: 3202cef792ab8d14dbefaf7668e3f719, type: 3}
+  effectTarget: 0
+  defaultTarget: {fileID: 1868483887309882261, guid: 3202cef792ab8d14dbefaf7668e3f719, type: 3}

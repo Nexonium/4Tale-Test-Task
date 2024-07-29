@@ -1,21 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "HealEffect", menuName = "Card Effects/Heal")]
 public class HealEffect : CardEffect
 {
-    private void Awake()
+    public override void Initialize()
     {
         CacheReferences();
     }
 
     private void CacheReferences()
     {
-        defaultTarget = FindObjectOfType<PlayerEntity>();
+        if (effectTarget == EffectTarget.Player)
+        {
+            defaultTarget = FindObjectOfType<PlayerEntity>();
+        }
+        else
+        {
+            defaultTarget = FindObjectOfType<EnemyEntity>();
+        }
     }
 
-    public override void ApplyEffect(Entity target)
+    public override void ApplyEffect(Entity target = null)
     {
         if (target == null) { target = defaultTarget; }
         Debug.Log($"Healing {effectValue} health to {target.name}");

@@ -658,8 +658,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7118869811152947807}
-  - component: {fileID: 5683185221817754767}
   - component: {fileID: 7507145997133750403}
+  - component: {fileID: 7390390825399886817}
   m_Layer: 5
   m_Name: CardPrefab
   m_TagString: Untagged
@@ -688,27 +688,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5683185221817754767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7388074033997104847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 214d48f7328a5494b96b9c9cadf785a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  card: {fileID: 0}
-  cardName: {fileID: 4291866660177769160}
-  cardDescription: {fileID: 3369302242914253825}
-  cardCost: {fileID: 1567691694834035547}
-  cardArt: {fileID: 297540299477438348}
-  isDragging: 0
-  isTargeting: 0
-  arrow: {fileID: 9104090813910394705}
-  scaleFactor: 1.2
 --- !u!114 &7507145997133750403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,6 +706,24 @@ MonoBehaviour:
   spacing: 20
   arrowAngleAdjust: 180
   dotsToSkip: 2
+--- !u!114 &7390390825399886817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388074033997104847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: effc7a53286d44b42a132a67b5c1d562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: {fileID: 0}
+  cardName: {fileID: 4291866660177769160}
+  cardDescription: {fileID: 3369302242914253825}
+  cardCost: {fileID: 1567691694834035547}
+  cardArt: {fileID: 297540299477438348}
+  scaleFactor: 1.2
 --- !u!1 &8426634805269598802
 GameObject:
   m_ObjectHideFlags: 0

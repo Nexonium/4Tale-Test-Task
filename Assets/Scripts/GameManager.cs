@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
         deck.DrawCards(player.handSize);
         uiManager.UpdateHand(deck.handPile);
         uiManager.UpdateEnergy(player.energy);
+
+        Debug.Log("Player's turn starts!");
     }
 
     public void EndPlayerTurn()
@@ -51,6 +53,9 @@ public class GameManager : MonoBehaviour
 
         deck.DiscardHand();
         uiManager.UpdateHand(deck.handPile);
+
+        Debug.Log("Player's turn ends!");
+
         StartCoroutine(EnemyTurn());
     }
 
@@ -94,5 +99,15 @@ public class GameManager : MonoBehaviour
         {
             EndPlayerTurn();
         }
+    }
+
+    public bool isTargetedEntity(Entity entity)
+    {
+        return uiManager.isTargetedEntity(entity);
+    }
+
+    public bool isOutOfHand()
+    {
+        return uiManager.isOutOfHand();
     }
 }

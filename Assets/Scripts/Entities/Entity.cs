@@ -16,6 +16,7 @@ public class Entity : MonoBehaviour
     public void TakeDamage(int damage)
     {
         int damageAfterDefence = Mathf.Max(damage - defence, 0);
+        defence = Mathf.Max(0, defence - damage);
         health -= damageAfterDefence;
         if (health <= 0)
         {

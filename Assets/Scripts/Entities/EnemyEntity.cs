@@ -80,6 +80,8 @@ public class EnemyAttack : EnemyAction
     {
         target = target ?? defaultTarget;
         target.TakeDamage(actionEffectValue);
+
+        Debug.Log($"Enemy strikes, dealing {actionEffectValue} damage to {target}!");
     }
 }
 
@@ -92,6 +94,8 @@ public class EnemyDefence : EnemyAction
     {
         target = target ?? defaultTarget;
         target.defence += actionEffectValue;
+
+        Debug.Log($"Enemy defends, gaining {actionEffectValue} block to {target}!");
     }
 }
 
@@ -108,6 +112,8 @@ public class EnemyHeal : EnemyAction
             int healthAfterHealing = Mathf.Min(target.health + actionEffectValue, target.maxHealth);
             target.health = healthAfterHealing;
         }
+
+        Debug.Log($"Enemy rests, regaining {actionEffectValue} health to {target}!");
     }
 }
 

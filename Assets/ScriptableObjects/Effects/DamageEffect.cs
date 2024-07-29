@@ -5,17 +5,24 @@ using UnityEngine;
 public class DamageEffect : TargetableEffect
 {
 
-    private void Awake()
+    public override void Initialize()
     {
         CacheReferences();
     }
 
     private void CacheReferences()
     {
-        defaultTarget = FindObjectOfType<EnemyEntity>();
+        if (effectTarget == EffectTarget.Player)
+        {
+            defaultTarget = FindObjectOfType<PlayerEntity>();
+        }
+        else
+        {
+            defaultTarget = FindObjectOfType<EnemyEntity>();
+        }
     }
 
-    public override void ApplyEffect(Entity target)
+    public override void ApplyEffect(Entity target = null)
     {
         if (target == null) { target = defaultTarget; }
         Debug.Log($"Dealing {effectValue} damage to {target.name}");

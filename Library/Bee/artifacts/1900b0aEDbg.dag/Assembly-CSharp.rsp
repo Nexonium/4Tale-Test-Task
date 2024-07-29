@@ -363,6 +363,7 @@
 "Assets/Scripts/BezierCurve.cs"
 "Assets/Scripts/CardScripts/CardCollection.cs"
 "Assets/Scripts/CardScripts/CardUI.cs"
+"Assets/Scripts/CardScripts/CardUI2.cs"
 "Assets/Scripts/CardScripts/Deck.cs"
 "Assets/Scripts/CardScripts/EndRoundButton.cs"
 "Assets/Scripts/CardScripts/PlayerEnergyViewer.cs"

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: DamageEffect6
   m_EditorClassIdentifier: 
   effectValue: 6
-  defaultTarget: {fileID: 7910182927306064496, guid: 00ead024eb696be409a28b183341b7b7, type: 3}
+  effectTarget: 1
+  defaultTarget: {fileID: 4441234848181999420, guid: 00ead024eb696be409a28b183341b7b7, type: 3}

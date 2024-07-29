@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Template for card as ScriptableObject. Contains name, description, cost, art, and effects.
+/// </summary>
+
 [CreateAssetMenu(fileName = "NewCard", menuName = "Card")]
 public class Card : ScriptableObject
 {
@@ -13,6 +17,19 @@ public class Card : ScriptableObject
 
     public TargetableEffect targetableEffect;
     public List<CardEffect> cardEffects = new();
+
+    public void Initialize()
+    {
+        if (HasTargetableEffect())
+        {
+            targetableEffect.Initialize();
+        }
+
+        foreach (CardEffect effect in cardEffects)
+        {
+            effect.Initialize();
+        }
+    }
 
     public bool HasTargetableEffect()
     {

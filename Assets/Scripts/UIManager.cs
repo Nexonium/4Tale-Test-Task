@@ -7,6 +7,7 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
 
+    [Header("Card, energy, and hand panel")]
     public GameObject cardPrefab;
     public Transform handPanel;
     public TextMeshProUGUI energyText;
@@ -40,8 +41,22 @@ public class UIManager : MonoBehaviour
             cardRect.anchoredPosition = new Vector2(xOffset, 0);
             cardRect.localRotation = Quaternion.Euler(0, 0, -angle);
 
-            CardUI cardUI = cardObject.GetComponent<CardUI>();
+            CardUI2 cardUI = cardObject.GetComponent<CardUI2>();
             cardUI.SetCard(hand[i]);
         }
     }
+
+    public bool isTargetedEntity(Entity entity)
+    {
+        RectTransform rect = entity.GetComponent<RectTransform>();
+        return RectTransformUtility.RectangleContainsScreenPoint(rect, Input.mousePosition);
+    }
+
+    public bool isOutOfHand()
+    {
+        RectTransform rect = handPanel.GetComponent<RectTransform>();
+        var result = !RectTransformUtility.RectangleContainsScreenPoint(rect, Input.mousePosition);
+        return result;
+    }
+
 }

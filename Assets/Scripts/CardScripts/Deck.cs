@@ -42,7 +42,7 @@ public class Deck : MonoBehaviour
     public void Initialize()
     {
         ShuffleDeck(drawPile);
-        DrawHand();
+        //DrawHand();
         handFieldController.UpdateHandDisplay(handPile.ToArray());
     }
 
@@ -77,7 +77,7 @@ public class Deck : MonoBehaviour
 
     public void ShuffleDiscardToDraw()
     {
-        discardPile = drawPile;
+        drawPile.AddRange(discardPile);
         discardPile.Clear();
         ShuffleDeck(drawPile);
     }
