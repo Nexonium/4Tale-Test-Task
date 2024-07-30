@@ -11,6 +11,7 @@ public class EnemyEntity : Entity
 
     public List<EnemyAction> possibleActions;
     public EnemyAction plannedAction;
+    public EnemyState currentState;
 
     private void Start()
     {
@@ -38,6 +39,9 @@ public class EnemyEntity : Entity
     protected override void Die()
     {
         Debug.Log("Enemy has died!");
+
+        // TODO: Game end
+
         Destroy(gameObject);
     }
 
@@ -46,6 +50,7 @@ public class EnemyEntity : Entity
         if (possibleActions.Count > 0)
         {
             plannedAction = possibleActions[Random.Range(0, possibleActions.Count)];
+            currentState.ChangeStateImage(plannedAction);
             Debug.Log("Enemy plans to: " + plannedAction.actionName);
         }
     }

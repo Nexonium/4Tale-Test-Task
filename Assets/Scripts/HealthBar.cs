@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HealthBar : MonoBehaviour
 {
@@ -9,15 +10,8 @@ public class HealthBar : MonoBehaviour
     public Slider healthSlider;
     public Slider defenceSlider;
 
-    public void Start()
-    {
-        CacheReferences();
-    }
-
-    private void CacheReferences()
-    {
-        
-    }
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI maxHealthText;
 
     public void Initialize(int maxHealth, int currentHealth)
     {
@@ -32,10 +26,12 @@ public class HealthBar : MonoBehaviour
     {
         healthSlider.minValue = 0;
         healthSlider.maxValue = value;
+        maxHealthText.text = value.ToString();
     }
     public void SetHealth(int currentHealth)
     {
         healthSlider.value = currentHealth;
+        healthText.text = currentHealth.ToString();
     }
 
     public void SetMaxDefence(int value)

@@ -368,6 +368,7 @@
 "Assets/Scripts/CardScripts/EndRoundButton.cs"
 "Assets/Scripts/CardScripts/PlayerEnergyViewer.cs"
 "Assets/Scripts/CardScripts/TargetSelectionManager.cs"
+"Assets/Scripts/EnemyState.cs"
 "Assets/Scripts/Entities/EnemyEntity.cs"
 "Assets/Scripts/Entities/Entity.cs"
 "Assets/Scripts/Entities/PlayerEntity.cs"
