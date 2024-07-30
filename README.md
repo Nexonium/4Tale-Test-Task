@@ -19,6 +19,7 @@
 - Similar to original Slay the Spire arrow using Bézier curve
 - Realistic card shuffle algorithm using Fisher–Yates shuffle
 - Neat pixel art
+- All code, art, and everything in the game is fully handmade by myself with love and soul
 
 ## Pictures
 ![Screenshot 1](https://github.com/Nexonium/4Tale-Test-Task/blob/main/Assets/Sprites/Enemy_1.png)
