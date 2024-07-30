@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     void StartPlayerTurn()
     {
         currentTurn = PlayTurn.PlayerTurn;
+        endTurnButton.enabled = true;
 
         player.RestoreEnergy(player.maxEnergy);
         player.ResetDefence();
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
     IEnumerator EnemyTurn()
     {
         currentTurn = PlayTurn.EnemyTurn;
+        endTurnButton.enabled = false;
         Debug.Log("Enemy's turn starts!");
 
         enemy.ResetDefence();
@@ -116,5 +118,26 @@ public class GameManager : MonoBehaviour
     public bool isOutOfHand()
     {
         return uiManager.isOutOfHand();
+    }
+
+    public void ShowPlayerMessage()
+    {
+        uiManager.ShowPlayerMessage();
+    }
+
+    public void WinBattle(bool winState)
+    {
+        var endText = winState == true ? "You won!" : "You died";
+
+        uiManager.ShowEndBattleText(endText);
+        EndBattle();
+    }
+
+    public void EndBattle()
+    {
+        Destroy(endTurnButton.gameObject);
+        Destroy(player.gameObject);
+        Destroy(enemy.gameObject);
+        deck.DiscardHand();
     }
 }

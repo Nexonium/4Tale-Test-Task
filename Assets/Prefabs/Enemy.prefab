@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5969491764004271187}
   - component: {fileID: 8352389842042868687}
   - component: {fileID: 4942193404378098216}
+  - component: {fileID: 3170720048670341037}
   m_Layer: 5
   m_Name: Planned_State
   m_TagString: Untagged
@@ -93,6 +94,27 @@ MonoBehaviour:
   heal: {fileID: 21300000, guid: 683cb5bdb5bcbf440854734d887ec66b, type: 3}
   imageComponent: {fileID: 8352389842042868687}
   actionImage: 1
+--- !u!95 &3170720048670341037
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025303941504830797}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 76116ab5d1238514284212b595e550be, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7910182927306064496
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,7 +24,6 @@ public class CardUI2 : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
     [Header("Highlight/Select properties")]
     public float scaleFactor = 1.2f;
 
-    private bool isHighlighted;
     private bool isTargeting;
 
     private ArrowArcRenderer arrow;
@@ -152,6 +151,10 @@ public class CardUI2 : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
                 StartTargeting();
             }
         }
+        else
+        {
+            gameManager.ShowPlayerMessage();
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -199,7 +202,7 @@ public class CardUI2 : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
             }
             else
             {
-                //gameManager.uiManager.ShowMessage("Not enough energy!");
+                gameManager.ShowPlayerMessage();
             }
         }
     }
@@ -214,7 +217,6 @@ public class CardUI2 : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 
     private void HighlightCard()
     {
-        isHighlighted = true;
         originalPosition = rectTransform.localPosition;
         originalRotation = rectTransform.localRotation;
         originalSiblingIndex = rectTransform.GetSiblingIndex();
@@ -226,7 +228,6 @@ public class CardUI2 : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 
     private void CancelHighlight()
     {
-        isHighlighted = false;
         rectTransform.localRotation = originalRotation;
         rectTransform.SetSiblingIndex(originalSiblingIndex);
         rectTransform.localScale = Vector3.one;

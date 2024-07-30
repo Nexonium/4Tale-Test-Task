@@ -13,6 +13,8 @@ public class EnemyEntity : Entity
     public EnemyAction plannedAction;
     public EnemyState currentState;
 
+    public GameManager gameManager;
+
     private void Start()
     {
         //Initialize();
@@ -39,8 +41,7 @@ public class EnemyEntity : Entity
     protected override void Die()
     {
         Debug.Log("Enemy has died!");
-
-        // TODO: Game end
+        gameManager.WinBattle(true);
 
         Destroy(gameObject);
     }

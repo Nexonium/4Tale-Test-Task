@@ -11,9 +11,21 @@ public class UIManager : MonoBehaviour
     public GameObject cardPrefab;
     public Transform handPanel;
     public TextMeshProUGUI energyText;
+    public TextMeshProUGUI endBattleText;
+    public GameObject playerSpeech;
 
     public float cardSpacing = 30f;
     public float maxRotationAngle = 20;
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        endBattleText.enabled = false;
+    }
 
     public void UpdateEnergy(int energy)
     {
@@ -59,4 +71,23 @@ public class UIManager : MonoBehaviour
         return result;
     }
 
+    public void ShowPlayerMessage()
+    {
+        if (!playerSpeech.active)
+        {
+            playerSpeech.SetActive(true);
+            Invoke("HidePlayerMessage", 3.0f);
+        }
+    }
+
+    public void HidePlayerMessage()
+    {
+        playerSpeech.SetActive(false);
+    }
+
+    public void ShowEndBattleText(string text)
+    {
+        endBattleText.enabled = true;
+        endBattleText.text = text;
+    }
 }

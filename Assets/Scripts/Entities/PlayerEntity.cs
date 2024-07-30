@@ -12,6 +12,8 @@ public class PlayerEntity : Entity
     public int energy;
     public int handSize;
 
+    public GameManager gameManager;
+
     public override void Initialize()
     {
         healthBar.Initialize(maxHealth, health);
@@ -47,6 +49,7 @@ public class PlayerEntity : Entity
     protected override void Die()
     {
         Debug.Log("Player has died!");
+        gameManager.WinBattle(false);
 
         Destroy(gameObject);
     }
