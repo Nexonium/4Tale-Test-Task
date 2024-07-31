@@ -7,6 +7,7 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+  - [Running the Game](#running-the-game)
 
 ## Overview
 **Card Battle Game** is a 2D card game inspired by Slay the Spire, where players navigate through rooms and engage in card-based combat. The game features turn-based mechanics, a variety of cards with different effects, and strategic gameplay elements.
@@ -31,3 +32,7 @@
 1. Clone the repository:
    ```sh
    git clone https://github.com/Nexonium/4Tale-Test-Task.git
+
+### Running the Game
+1. In Unity, open the Main scene.
+2. Click the Play button to start the game.
