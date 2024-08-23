@@ -1,4 +1,4 @@
-# Card Battle Game
+# Card Battle Prototype
 
 
 ## Table of Contents
@@ -10,7 +10,7 @@
   - [Running the Game](#running-the-game)
 
 ## Overview
-The protitype features turn-based mechanics, a variety of cards with effects, and strategic gameplay elements.
+The protitype features turn-based mechanics, a variety of cards with effects, and strategic gameplay elements inspired by **Spay the Spire** game.
 
 ## Features
 - Flexible expandable architecture and card system built using ScriptableObjects
