@@ -10,7 +10,7 @@
   - [Running the Game](#running-the-game)
 
 ## Overview
-The protitypr features turn-based mechanics, a variety of cards with effects, and strategic gameplay elements.
+The protitype features turn-based mechanics, a variety of cards with effects, and strategic gameplay elements.
 
 ## Features
 - Flexible expandable architecture and card system built using ScriptableObjects
