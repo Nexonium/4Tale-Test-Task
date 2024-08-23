@@ -10,7 +10,7 @@
   - [Running the Game](#running-the-game)
 
 ## Overview
-**Card Battle Game** is a 2D card game inspired by Slay the Spire, where players navigate through rooms and engage in card-based combat. The game features turn-based mechanics, a variety of cards with different effects, and strategic gameplay elements.
+The protitypr features turn-based mechanics, a variety of cards with effects, and strategic gameplay elements.
 
 ## Features
 - Flexible expandable architecture and card system built using ScriptableObjects
