@@ -31,7 +31,7 @@ The protitype features turn-based mechanics, a variety of cards with effects, an
 ### Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/Nexonium/4Tale-Test-Task.git
+   git clone https://github.com/Nexonium/Card-Game-Prototype.git
 
 ### Running the Game
 1. In Unity, open the Main scene.
